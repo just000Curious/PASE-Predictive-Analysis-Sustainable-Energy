@@ -1,0 +1,244 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Professional Light Theme - Grid Operator Software */
+@layer base {
+  :root {
+    --background: 0 0% 98%;
+    --foreground: 222 47% 11%;
+
+    --card: 210 40% 99%;
+    --card-foreground: 222 47% 11%;
+    --card-border: 220 13% 91%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 222 47% 11%;
+
+    --primary: 142 76% 36%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 210 40% 96%;
+    --secondary-foreground: 222 47% 11%;
+
+    --muted: 210 40% 96%;
+    --muted-foreground: 215 25% 45%;
+
+    --accent: 221 83% 53%;
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 220 13% 91%;
+    --input: 220 13% 91%;
+    --ring: 142 76% 36%;
+
+    --radius: 0.5rem;
+
+    /* Energy System Colors - Crisp & Professional */
+    --supply: 142 76% 36%;
+    --demand: 24 95% 53%;
+    --battery: 221 83% 53%;
+    --grid-export: 262 83% 58%;
+    --grid-import: 0 84% 60%;
+    --warning: 38 92% 50%;
+    --success: 142 76% 36%;
+    --critical: 0 72% 51%;
+    
+    --chart-bg: 210 40% 98%;
+    --grid-line: 220 13% 91%;
+    
+    --sidebar-background: 0 0% 100%;
+    --sidebar-foreground: 222 47% 11%;
+    --sidebar-primary: 142 76% 36%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 210 40% 96%;
+    --sidebar-accent-foreground: 222 47% 11%;
+    --sidebar-border: 220 13% 91%;
+    --sidebar-ring: 142 76% 36%;
+  }
+
+  .dark {
+    --background: 222 47% 11%;
+    --foreground: 210 40% 98%;
+
+    --card: 217 33% 17%;
+    --card-foreground: 210 40% 98%;
+    --card-border: 215 25% 27%;
+
+    --popover: 217 33% 17%;
+    --popover-foreground: 210 40% 98%;
+
+    --primary: 142 76% 40%;
+    --primary-foreground: 222 47% 11%;
+
+    --secondary: 217 33% 22%;
+    --secondary-foreground: 210 40% 98%;
+
+    --muted: 217 33% 22%;
+    --muted-foreground: 215 20% 65%;
+
+    --accent: 213 94% 68%;
+    --accent-foreground: 222 47% 11%;
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 215 25% 27%;
+    --input: 215 25% 27%;
+    --ring: 142 76% 40%;
+
+    --supply: 142 76% 40%;
+    --demand: 38 92% 55%;
+    --battery: 213 94% 68%;
+    --grid-export: 262 83% 65%;
+    --grid-import: 0 84% 65%;
+    --warning: 38 92% 55%;
+    --success: 142 76% 40%;
+    --critical: 0 72% 55%;
+    
+    --chart-bg: 217 33% 15%;
+    --grid-line: 215 28% 25%;
+    
+    --sidebar-background: 217 33% 15%;
+    --sidebar-foreground: 210 40% 98%;
+    --sidebar-primary: 142 76% 40%;
+    --sidebar-primary-foreground: 210 40% 98%;
+    --sidebar-accent: 217 33% 22%;
+    --sidebar-accent-foreground: 210 40% 98%;
+    --sidebar-border: 215 25% 27%;
+    --sidebar-ring: 142 76% 40%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+  }
+}
+
+/* Professional Card Styling */
+@layer components {
+  .card-elevated {
+    @apply bg-card border border-border rounded-xl;
+    box-shadow: 
+      0 1px 2px rgba(0,0,0,0.03),
+      0 4px 12px rgba(0,0,0,0.05);
+  }
+
+  .card-elevated:hover {
+    box-shadow: 
+      0 2px 4px rgba(0,0,0,0.04),
+      0 8px 24px rgba(0,0,0,0.08);
+  }
+
+  .metric-panel {
+    @apply bg-card border border-border rounded-xl p-5;
+    background: linear-gradient(135deg, 
+      hsl(var(--card)) 0%, 
+      hsl(var(--card)) 85%,
+      hsla(var(--primary) / 0.03) 100%);
+    box-shadow: 
+      0 1px 2px rgba(0,0,0,0.03),
+      0 4px 12px rgba(0,0,0,0.05);
+  }
+
+  .schematic-container {
+    @apply bg-card border border-border rounded-xl p-6;
+    background: linear-gradient(180deg, 
+      hsl(var(--card)) 0%, 
+      hsl(210 40% 97%) 100%);
+    box-shadow: 
+      0 1px 3px rgba(0,0,0,0.05),
+      0 8px 32px rgba(0,0,0,0.08);
+  }
+
+  .dark .schematic-container {
+    background: linear-gradient(180deg, 
+      hsl(var(--card)) 0%, 
+      hsl(217 33% 14%) 100%);
+  }
+}
+
+/* Professional Flow Animations */
+@keyframes flowRight {
+  from { stroke-dashoffset: 20; }
+  to { stroke-dashoffset: 0; }
+}
+
+@keyframes flowDown {
+  from { stroke-dashoffset: 16; }
+  to { stroke-dashoffset: 0; }
+}
+
+@keyframes flowUp {
+  from { stroke-dashoffset: 0; }
+  to { stroke-dashoffset: 16; }
+}
+
+@keyframes gentleRotate {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.6; }
+}
+
+@keyframes glow {
+  0%, 100% { filter: drop-shadow(0 0 3px currentColor); }
+  50% { filter: drop-shadow(0 0 8px currentColor); }
+}
+
+@keyframes dataFlow {
+  0% { opacity: 0.4; transform: scale(0.8); }
+  50% { opacity: 1; transform: scale(1); }
+  100% { opacity: 0.4; transform: scale(0.8); }
+}
+
+/* Status badge animations */
+.status-pulse {
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+/* Data value styling */
+.data-value {
+  @apply font-mono font-semibold tabular-nums;
+}
+
+/* Chart tooltip professional styling */
+.recharts-tooltip-wrapper {
+  filter: drop-shadow(0 4px 12px rgba(0,0,0,0.1));
+}
+
+.recharts-tooltip-wrapper .recharts-default-tooltip {
+  @apply bg-card border-border rounded-lg;
+  padding: 12px 16px !important;
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-muted rounded-full;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-muted-foreground/30 rounded-full;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  @apply bg-muted-foreground/50;
+}
