@@ -15,18 +15,14 @@ GridSync PASE Console is a comprehensive **industrial-scale wind farm grid manag
 ---
 
 ## **📊 Dashboard Preview**
+<img width="566" height="653" alt="Screenshot 2025-12-17 020041" src="https://github.com/user-attachments/assets/33d48dd0-3715-49c7-92bb-3d54bdea5847" />
+
+<img width="593" height="565" alt="Screenshot 2025-12-17 020017" src="https://github.com/user-attachments/assets/16a1052c-e87f-443e-9e9d-974890e2e9ad" />
 
 
-<img width="566" height="653" alt="Screenshot 2025-12-17 020041" src="https://github.com/user-attachments/assets/27f6bfe2-818f-47ab-96fd-b2874f826dbf" />
-
-<img width="593" height="565" alt="Screenshot 2025-12-17 020017" src="https://github.com/user-attachments/assets/92cf0d1b-74f4-4575-b4df-db56e94199d4" />
-
-
-<img width="1899" height="715" alt="Screenshot 2025-12-17 020004" src="https://github.com/user-attachments/assets/f211a7a9-ab11-4ead-b201-5bc6b15b4e5b" />
-
-<img width="1908" height="787" alt="Screenshot 2025-12-17 015947" src="https://github.com/user-attachments/assets/685c0c88-1436-4b64-8dc2-75545827a6cf" />
-
-<img width="1908" height="490" alt="Screenshot 2025-12-17 015925" src="https://github.com/user-attachments/assets/51ba9028-cb51-45ca-8763-77465e855706" />
+<img width="1899" height="715" alt="Screenshot 2025-12-17 020004" src="https://github.com/user-attachments/assets/4c8cac7b-bf81-4edd-b1d5-e50bbe44e754" />
+<img width="1908" height="787" alt="Screenshot 2025-12-17 015947" src="https://github.com/user-attachments/assets/4f8adfc0-47e3-47b1-9f4e-7b8a69722600" />
+<img width="1908" height="490" alt="Screenshot 2025-12-17 015925" src="https://github.com/user-attachments/assets/85850e0e-ed3c-4834-8ac9-820a79d72fc7" />
 
 
 ## **🚀 Quick Start Guide**
