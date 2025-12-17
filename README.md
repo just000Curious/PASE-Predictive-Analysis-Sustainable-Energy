@@ -520,26 +520,6 @@ git push origin feature/your-feature
 - [Grid-Scale Battery Storage](https://www.energy.gov/eere/electricity/grid-scale-storage)
 - [Renewable Integration Studies](https://www.iea.org/topics/renewables)
 
-### **Academic Papers**
-1. "Machine Learning for Wind Power Prediction" - IEEE Transactions
-2. "Grid-Scale Battery Optimization" - Energy Systems Journal
-3. "Renewable Energy Forecasting" - Renewable Energy Journal
-
----
-
-## **📞 Support & Contact**
-
-### **Getting Help**
-- **GitHub Issues**: [Project Issues Page](https://github.com/yourusername/windmill-project/issues)
-- **Documentation**: `http://localhost:8001/docs` (when running)
-- **Email**: project.support@example.com
-
-### **Community**
-- **Discord**: [Join our community](https://discord.gg/your-invite)
-- **Stack Overflow**: Tag questions with `gridsync-pase`
-- **Twitter**: `@GridSyncPASE`
-
----
 
 ## **⚠️ Disclaimer & Acknowledgments**
 
