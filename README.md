@@ -553,7 +553,6 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 - [ ] Health checks passing
 - [ ] Documentation updated
 - [ ] Tests passing
-- [ ] Security review completed
 
 ---
 
