@@ -65,7 +65,8 @@ print(f"✅ System Status: {response.json()}")
 
 ## **🏗️ System Architecture**
 
-<img width="4106" height="2448" alt="deepseek_mermaid_20251216_e99839" src="https://github.com/user-attachments/assets/1c6ef907-e0e7-4c9e-baae-06b052ca547a" />
+<img width="4106" height="2448" alt="deepseek_mermaid_20251222_63b0d8" src="https://github.com/user-attachments/assets/ac86d915-edf4-4604-bae4-382760cd00d2" />
+
 
 
 ### **🔬 Core Technologies**
