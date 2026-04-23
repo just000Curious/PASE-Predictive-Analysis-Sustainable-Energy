@@ -23,6 +23,10 @@ class SimulationRequest(BaseModel):
     battery_low_threshold: Optional[float] = 0.2
     battery_high_threshold: Optional[float] = 0.8
 
+    # Configurable pricing (FIX #6)
+    buy_price_per_mwh: Optional[float] = 150.0   # Grid import cost £/MWh
+    sell_price_per_mwh: Optional[float] = 40.0    # Grid export revenue £/MWh
+
 
 class Alert(BaseModel):
     level: Literal["critical", "warning", "info"]

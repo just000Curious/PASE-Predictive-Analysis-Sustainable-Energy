@@ -22,4 +22,4 @@ __all__ = [
     'SimulationResponse'
 ]
 
-print("✅ Models package initialized")
+print("[OK] Models package initialized")

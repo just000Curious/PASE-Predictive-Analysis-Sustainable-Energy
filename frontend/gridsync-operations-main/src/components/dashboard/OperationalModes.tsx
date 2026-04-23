@@ -30,7 +30,12 @@ interface OperationalModesProps {
     gridIssue: boolean;
     batteryFault: boolean;
   };
-  setFaults: (faults: any) => void;
+  setFaults: (faults: {
+    turbineFailure: boolean;
+    multipleTurbineFailure: boolean;
+    gridIssue: boolean;
+    batteryFault: boolean;
+  }) => void;
   onRunSimulation: () => void;
   isRunning: boolean;
   dateRange?: DateRange;
@@ -80,7 +85,7 @@ const OperationalModes = ({
   };
 
   return (
-    <Tabs value={mode} onValueChange={(v) => setMode(v as any)} className="w-full">
+    <Tabs value={mode} onValueChange={(v) => setMode(v as 'LIVE' | 'MANUAL' | 'CUSTOM')} className="w-full">
       <TabsList className="grid w-full grid-cols-3 bg-card border border-border">
         <TabsTrigger value="LIVE" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
           LIVE

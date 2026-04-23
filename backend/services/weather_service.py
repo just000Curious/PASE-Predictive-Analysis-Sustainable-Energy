@@ -30,7 +30,7 @@ class WeatherService:
             return self._parse_weather_data(data)
 
         except Exception as e:
-            print(f"🌤️ Weather API error: {e}. Using mock data.")
+            print(f"[WEATHER] Weather API error: {e}. Using mock data.")
             return self._get_mock_weather_forecast()
 
     def _parse_weather_data(self, data: dict) -> pd.DataFrame:
@@ -67,7 +67,7 @@ class WeatherService:
             'Forecast_Confidence': confidences[:24]
         })
 
-        print(f"🌤️ Weather forecast loaded: {len(df)} hours")
+        print(f"[WEATHER] Weather forecast loaded: {len(df)} hours")
         return df
 
     def _calculate_confidence(self, period_data: dict) -> float:
@@ -119,7 +119,7 @@ class WeatherService:
             'Forecast_Confidence': confidences
         })
 
-        print(f"🌤️ Using SMOOTH mock weather data - Avg wind: {np.mean(wind_speeds):.1f} m/s")
+        print(f"[WEATHER] Using SMOOTH mock weather data - Avg wind: {np.mean(wind_speeds):.1f} m/s")
         return df
 
     def get_forecast_summary(self, weather_df: pd.DataFrame) -> dict:

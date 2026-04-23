@@ -13,16 +13,16 @@ class MLModelManager:
         """Load the joblib models"""
         try:
             self.model_supply = joblib.load(settings.MODEL_SUPPLY_PATH)
-            print(f"✓ Supply model loaded: {settings.MODEL_SUPPLY_PATH}")
+            print(f"[OK] Supply model loaded: {settings.MODEL_SUPPLY_PATH}")
         except Exception as e:
-            print(f"✗ Failed to load supply model: {e}")
+            print(f"[FAIL] Failed to load supply model: {e}")
             raise
 
         try:
             self.model_demand = joblib.load(settings.MODEL_DEMAND_PATH)
-            print(f"✓ Demand model loaded: {settings.MODEL_DEMAND_PATH}")
+            print(f"[OK] Demand model loaded: {settings.MODEL_DEMAND_PATH}")
         except Exception as e:
-            print(f"✗ Failed to load demand model: {e}")
+            print(f"[FAIL] Failed to load demand model: {e}")
             raise
 
     def predict_supply(self, wind_speed: float, wind_dir_sin: float, wind_dir_cos: float) -> float:

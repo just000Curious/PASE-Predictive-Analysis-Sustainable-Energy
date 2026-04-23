@@ -304,6 +304,7 @@ const Index = () => {
         clearInterval(liveIntervalRef.current);
       }
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [mode]); // Only re-run when mode changes
 
   // Keyboard shortcuts
@@ -333,6 +334,7 @@ const Index = () => {
 
     window.addEventListener('keydown', handleKeyPress);
     return () => window.removeEventListener('keydown', handleKeyPress);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [mode, simulationData]);
 
   const latestData = simulationData.length > 0 ? simulationData[simulationData.length - 1] : null;

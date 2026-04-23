@@ -9,4 +9,4 @@ __all__ = [
     'settings'
 ]
 
-print("✅ Utils package initialized")
+print("[OK] Utils package initialized")

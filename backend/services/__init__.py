@@ -11,4 +11,4 @@ __all__ = [
     'SimulationService'
 ]
 
-print("✅ Services package initialized")
+print("[OK] Services package initialized")

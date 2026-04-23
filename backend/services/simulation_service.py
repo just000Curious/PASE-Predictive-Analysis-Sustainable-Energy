@@ -9,97 +9,41 @@ import os
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 
-# Define the Pydantic models inline since imports are failing
-class Alert:
-    def __init__(self, level: str, message: str, timestamp: datetime, details: Optional[str] = None):
-        self.level = level
-        self.message = message
-        self.timestamp = timestamp
-        self.details = details
+from models.simulation import Alert, SimulationResult, MaintenanceWindow
 
 
-class SimulationResult:
-    def __init__(self, hour: int, datetime: datetime, simulated_supply_mw: float,
-                 simulated_demand_mw: float, net_balance_mw: float, battery_charge_mwh: float,
-                 battery_percent: float, to_battery_mw: float, from_battery_mw: float,
-                 to_grid_mw: float, from_grid_mw: float, status: str, wind_speed: float,
-                 wind_direction: float):
-        self.hour = hour
-        self.datetime = datetime
-        self.simulated_supply_mw = simulated_supply_mw
-        self.simulated_demand_mw = simulated_demand_mw
-        self.net_balance_mw = net_balance_mw
-        self.battery_charge_mwh = battery_charge_mwh
-        self.battery_percent = battery_percent
-        self.to_battery_mw = to_battery_mw
-        self.from_battery_mw = from_battery_mw
-        self.to_grid_mw = to_grid_mw
-        self.from_grid_mw = from_grid_mw
-        self.status = status
-        self.wind_speed = wind_speed
-        self.wind_direction = wind_direction
+# ===== FIX #1: Load real ML models with graceful fallback =====
+_using_real_models = False
+try:
+    from models.ml_models import MLModelManager
+    model_manager = MLModelManager()
+    _using_real_models = True
+    print("[OK] Real ML models loaded successfully")
+except Exception as e:
+    print(f"[WARN] Failed to load real ML models ({e}), using physics fallback")
 
-    def model_dump(self):
-        """Convert to dictionary for DataFrame creation"""
-        return {
-            'hour': self.hour,
-            'datetime': self.datetime,
-            'simulated_supply_mw': self.simulated_supply_mw,
-            'simulated_demand_mw': self.simulated_demand_mw,
-            'net_balance_mw': self.net_balance_mw,
-            'battery_charge_mwh': self.battery_charge_mwh,
-            'battery_percent': self.battery_percent,
-            'to_battery_mw': self.to_battery_mw,
-            'from_battery_mw': self.from_battery_mw,
-            'to_grid_mw': self.to_grid_mw,
-            'from_grid_mw': self.from_grid_mw,
-            'status': self.status,
-            'wind_speed': self.wind_speed,
-            'wind_direction': self.wind_direction
-        }
+    # Fallback dummy implementation
+    class MLModelManager:
+        def __init__(self):
+            print("[WARN] Using dummy ML model manager (physics-only)")
 
+        def predict_supply(self, wind_speed: float, wind_dir_sin: float, wind_dir_cos: float) -> float:
+            """Physics-based supply prediction fallback"""
+            if wind_speed < 3.5:
+                return 0.0
+            elif wind_speed < 12:
+                power = (wind_speed - 3.5) / (12 - 3.5) * 3000
+                return max(0, power)
+            else:
+                return 3000.0
 
-class MaintenanceWindow:
-    def __init__(self, start_time: datetime, end_time: datetime, score: float,
-                 lost_generation_mwh: float, avg_wind_speed: float, avg_demand: float,
-                 avg_battery_soc: float):
-        self.start_time = start_time
-        self.end_time = end_time
-        self.score = score
-        self.lost_generation_mwh = lost_generation_mwh
-        self.avg_wind_speed = avg_wind_speed
-        self.avg_demand = avg_demand
-        self.avg_battery_soc = avg_battery_soc
+        def predict_demand(self, hour: int, weekday: int, month: int, yearday: int) -> float:
+            """Physics-based demand prediction fallback"""
+            base = 10000
+            daily_variation = np.sin((hour - 6) * np.pi / 12) * 2000
+            return base + daily_variation
 
-
-# Simple ML Model Manager (dummy implementation since import fails)
-class MLModelManager:
-    def __init__(self):
-        print("⚠️ Using dummy ML model manager")
-
-    def predict_supply(self, wind_speed: float, wind_dir_sin: float, wind_dir_cos: float) -> float:
-        """Dummy supply prediction"""
-        # Basic wind power formula as fallback
-        if wind_speed < 3.5:
-            return 0.0
-        elif wind_speed < 12:
-            # Scale from 0 to 3000 kW
-            power = (wind_speed - 3.5) / (12 - 3.5) * 3000
-            return max(0, power)
-        else:
-            return 3000.0  # Max output
-
-    def predict_demand(self, hour: int, weekday: int, month: int, yearday: int) -> float:
-        """Dummy demand prediction"""
-        # Base demand with daily pattern
-        base = 10000  # 10 MW base
-        # Add daily variation (peak during day, low at night)
-        daily_variation = np.sin((hour - 6) * np.pi / 12) * 2000
-        return base + daily_variation
-
-
-# Create global model_manager instance
-model_manager = MLModelManager()
+    model_manager = MLModelManager()
 
 
 class IndustrialScaler:
@@ -161,12 +105,15 @@ class IndustrialScaler:
             return round(total_power_mw, 2)
 
         except Exception as e:
-            print(f"⚠️ Supply scaling error: {e}")
+            print(f"[WARN] Supply scaling error: {e}")
             return self._physical_supply_fallback(wind_speed, turbine_availability)
 
     def scale_demand(self, hour: int, weekday: int, month: int, yearday: int,
-                     community_demand_percent: float = 0.01, base_load_mw: float = 75.0) -> float:
-        """FIXED: Demand with proper time variation AND correct default value (0.01)"""
+                     base_load_mw: float = 75.0, **kwargs) -> float:
+        """FIX #2: Demand with proper time variation. Removed community_demand_percent
+        multiplier that was crushing demand to near-zero (0.01 * 75 = 0.75 MW,
+        then clamped to 55 MW floor, hiding all time-of-day variation).
+        Now produces realistic 55-120 MW directly from base_load_mw × time_factor."""
 
         # STRONG time-of-day pattern
         if 0 <= hour < 5:  # Night (12am-5am)
@@ -184,7 +131,7 @@ class IndustrialScaler:
         else:  # Late night (10pm-12am)
             time_factor = 0.8
 
-        # Calculate base demand
+        # Calculate base demand directly (no percentage multiplier)
         base_demand = base_load_mw * time_factor
 
         # Add ML-like variation
@@ -193,17 +140,14 @@ class IndustrialScaler:
         # Add random noise
         random_noise = np.random.normal(0, 3.0)
 
-        # Calculate total demand
+        # Calculate total demand — NO community_demand_percent multiplication
         total_demand = base_demand + ml_variation + random_noise
-
-        # Apply community percentage - CHANGED to 0.01 to match SimulationRequest
-        total_demand = total_demand * community_demand_percent
 
         # Ensure realistic bounds (55-120 MW)
         total_demand = max(55.0, min(total_demand, 120.0))
 
-        # Optional debug print
-        if hour in [0, 6, 12, 18]:  # Print only sample hours
+        # Debug print for sample hours
+        if hour in [0, 6, 12, 18]:
             print(f"DEBUG Demand hour {hour}: time_factor={time_factor:.2f}, "
                   f"base={base_demand:.1f}, variation={ml_variation:.1f}, "
                   f"total={total_demand:.1f} MW")
@@ -270,8 +214,8 @@ class SimulationService:
         # Initialize scaler
         self.scaler = IndustrialScaler(turbine_count=self.turbine_count)
 
-        print(f"🏭 INDUSTRIAL SIMULATION INITIALIZED")
-        print(f"   Wind Farm: {self.turbine_count} turbines × 3MW = {self.turbine_count * 3}MW capacity")
+        print(f"[INIT] INDUSTRIAL SIMULATION INITIALIZED")
+        print(f"   Wind Farm: {self.turbine_count} turbines x 3MW = {self.turbine_count * 3}MW capacity")
         print(
             f"   Battery: {self.battery_capacity_mwh}MWh ({self.battery_min_soc * 100}%-{self.battery_max_soc * 100}% SOC range)")
         print(f"   Demand: {self.community_base_load_mw}MW base, {self.community_demand_percent * 100}% scaling")
@@ -279,7 +223,7 @@ class SimulationService:
 
     def run_simulation(self, weather_df: pd.DataFrame) -> Tuple[List[SimulationResult], List[Alert]]:
         """Run 24-hour simulation with proper battery management"""
-        print(f"⚡ Starting 24-hour simulation with {len(weather_df)} hours")
+        print(f"[SIM] Starting 24-hour simulation with {len(weather_df)} hours")
 
         results = []
         alerts = []
@@ -354,7 +298,7 @@ class SimulationService:
             if wind_speed < 2.5:
                 alerts.append(Alert(
                     level="warning",
-                    message=f"🌬️ Very low wind: {wind_speed:.1f} m/s",
+                    message=f"[LOW WIND] Very low wind: {wind_speed:.1f} m/s",
                     timestamp=dt
                 ))
             return 0.0
@@ -362,7 +306,7 @@ class SimulationService:
         elif wind_speed > self.high_wind_threshold:
             alerts.append(Alert(
                 level="critical",
-                message=f"🌀 Extreme wind shutdown: {wind_speed:.1f} m/s",
+                message=f"[EXTREME WIND] Extreme wind shutdown: {wind_speed:.1f} m/s",
                 timestamp=dt
             ))
             return 0.0
@@ -371,13 +315,12 @@ class SimulationService:
         return self.scaler.scale_supply(wind_speed, wind_dir, self.turbine_availability)
 
     def _calculate_demand(self, dt: datetime, hour: int) -> float:
-        """Calculate community demand"""
+        """Calculate community demand (FIX #2: removed community_demand_percent)"""
         return self.scaler.scale_demand(
             hour=hour,
             weekday=dt.weekday(),
             month=dt.month,
             yearday=dt.timetuple().tm_yday,
-            community_demand_percent=self.community_demand_percent,
             base_load_mw=self.community_base_load_mw
         )
 
@@ -406,7 +349,7 @@ class SimulationService:
             if to_battery > 0 and current_soc > 0.85:
                 alerts.append(Alert(
                     level="info",
-                    message=f"🔋 Battery charging at {current_soc:.0%} SOC",
+                    message=f"[BATTERY] Battery charging at {current_soc:.0%} SOC",
                     timestamp=dt
                 ))
 
@@ -426,7 +369,7 @@ class SimulationService:
             if from_grid > 0:
                 alerts.append(Alert(
                     level="warning",
-                    message=f"⚠️ Grid import: {from_grid:.1f} MW",
+                    message=f"[GRID IMPORT] Grid import: {from_grid:.1f} MW",
                     timestamp=dt
                 ))
 
@@ -443,7 +386,8 @@ class SimulationService:
             new_battery += effective_charge
 
         if from_battery > 0:
-            new_battery -= from_battery
+            # FIX #5: Apply discharge efficiency (battery loses energy on discharge too)
+            new_battery -= from_battery / self.battery_efficiency
 
         # Enforce SOC limits
         min_mwh = self.battery_min_soc * self.battery_capacity_mwh
@@ -456,13 +400,13 @@ class SimulationService:
         if soc < self.battery_low_alert:
             alerts.append(Alert(
                 level="critical",
-                message=f"🔴 Battery low: {soc:.0%} SOC",
+                message=f"[CRITICAL] Battery low: {soc:.0%} SOC",
                 timestamp=dt
             ))
         elif soc > self.battery_high_alert:
             alerts.append(Alert(
                 level="warning",
-                message=f"🟡 Battery high: {soc:.0%} SOC",
+                message=f"[WARNING] Battery high: {soc:.0%} SOC",
                 timestamp=dt
             ))
 
@@ -471,13 +415,13 @@ class SimulationService:
     def _print_simulation_summary(self, results: List[SimulationResult], alerts: List[Alert]):
         """Print simulation summary"""
         if not results:
-            print("❌ No simulation results")
+            print("[ERROR] No simulation results")
             return
 
         supplies = [r.simulated_supply_mw for r in results]
         demands = [r.simulated_demand_mw for r in results]
 
-        print(f"\n📊 SIMULATION SUMMARY")
+        print(f"\n=== SIMULATION SUMMARY ===")
         print(f"   Hours simulated: {len(results)}")
         print(f"   Supply range: {min(supplies):.1f}-{max(supplies):.1f} MW")
         print(f"   Demand range: {min(demands):.1f}-{max(demands):.1f} MW")
@@ -521,10 +465,13 @@ class SimulationService:
                 avg_battery_soc=window['battery_percent'].mean() / 100
             ))
 
-        return sorted(windows, key=lambda x: x.score)[:3]
+        # FIX #3: Sort by HIGHEST score (largest score = lowest supply + lowest demand = best for maintenance)
+        return sorted(windows, key=lambda x: x.score, reverse=True)[:3]
 
     def generate_summary(self, sim_results: List[SimulationResult], alerts: List[Alert]) -> dict:
-        """Generate comprehensive summary"""
+        """Generate comprehensive summary with keys matching frontend interface.
+        FIX #4: Added capacity_factor, renewable_penetration, and aligned all key names.
+        FIX #5: Uses configurable pricing from self.config."""
         if not sim_results:
             return {}
 
@@ -543,6 +490,23 @@ class SimulationService:
         battery_levels = [r.battery_charge_mwh for r in sim_results]
         battery_percents = [r.battery_percent for r in sim_results]
 
+        # FIX #5: Capacity factor = actual generation / theoretical max generation
+        system_capacity_mw = self.turbine_count * 3.0  # 3 MW per turbine
+        theoretical_max_mwh = system_capacity_mw * len(sim_results)  # 1 hour per data point
+        capacity_factor = (total_supply / theoretical_max_mwh * 100) if theoretical_max_mwh > 0 else 0
+
+        # Renewable penetration = supply / (supply + grid imports)
+        total_energy_consumed = total_supply + total_import
+        renewable_penetration = (total_supply / total_energy_consumed * 100) if total_energy_consumed > 0 else 0
+
+        # Configurable pricing
+        sell_price = self.config.get('sell_price_per_mwh', 40.0)
+        buy_price = self.config.get('buy_price_per_mwh', 150.0)
+
+        export_revenue = round(total_export * sell_price, 2)
+        import_cost = round(total_import * buy_price, 2)
+        net_revenue = round(export_revenue - import_cost, 2)
+
         return {
             'operational': {
                 'surplus_hours': surplus_hours,
@@ -550,33 +514,53 @@ class SimulationService:
                 'balanced_hours': balanced_hours,
                 'total_generation_mwh': round(total_supply, 2),
                 'total_consumption_mwh': round(total_demand, 2),
-                'total_export_mwh': round(total_export, 2),
-                'total_import_mwh': round(total_import, 2),
+                # FIX #4: Frontend expects these exact key names
+                'total_grid_export_mwh': round(total_export, 2),
+                'total_grid_import_mwh': round(total_import, 2),
                 'net_energy_mwh': round(total_supply - total_demand, 2),
                 'avg_supply_mw': round(np.mean(supplies), 2),
                 'avg_demand_mw': round(np.mean(demands), 2),
                 'max_supply_mw': round(max(supplies), 2),
-                'min_demand_mw': round(min(demands), 2)
+                'max_supply_achieved': round(max(supplies), 2),
+                'min_demand_mw': round(min(demands), 2),
+                # FIX #5: Capacity factor and renewable penetration
+                'capacity_factor': f"{capacity_factor:.1f}%",
+                'renewable_penetration': f"{renewable_penetration:.1f}%",
             },
             'battery': {
                 'initial_mwh': self.initial_battery_mwh,
                 'final_mwh': round(sim_results[-1].battery_charge_mwh, 2),
+                'final_charge': round(sim_results[-1].battery_charge_mwh, 2),
                 'final_percent': round(sim_results[-1].battery_percent, 1),
                 'min_mwh': round(min(battery_levels), 2),
+                'min_charge': round(min(battery_levels), 2),
                 'max_mwh': round(max(battery_levels), 2),
+                'max_charge': round(max(battery_levels), 2),
                 'avg_percent': round(np.mean(battery_percents), 1),
-                'cycles_equivalent': round(sum(r.from_battery_mw for r in sim_results) / self.battery_capacity_mwh, 3)
+                'cycles_equivalent': round(sum(r.from_battery_mw for r in sim_results) / self.battery_capacity_mwh, 3),
+                'cycles_completed': round(sum(r.from_battery_mw for r in sim_results) / self.battery_capacity_mwh, 3),
+                'efficiency': f"{self.battery_efficiency * 100:.0f}%"
             },
             'grid': {
                 'self_sufficiency': round(total_supply / total_demand * 100, 1) if total_demand > 0 else 0,
                 'import_dependency': round(total_import / total_demand * 100, 1) if total_demand > 0 else 0,
-                'export_revenue': round(total_export * 40, 2),
-                'import_cost': round(total_import * 150, 2)
+                'export_revenue': export_revenue,
+                'import_cost': import_cost
+            },
+            'financial': {
+                'estimated_revenue_usd': export_revenue,
+                'grid_export_value_usd': export_revenue,
+                'grid_import_cost_usd': import_cost,
+                'net_revenue_usd': net_revenue
             },
             'alerts': {
                 'total': len(alerts),
+                'total_alerts': len(alerts),
                 'critical': len([a for a in alerts if a.level == 'critical']),
+                'critical_alerts': len([a for a in alerts if a.level == 'critical']),
                 'warning': len([a for a in alerts if a.level == 'warning']),
-                'info': len([a for a in alerts if a.level == 'info'])
+                'warning_alerts': len([a for a in alerts if a.level == 'warning']),
+                'info': len([a for a in alerts if a.level == 'info']),
+                'info_alerts': len([a for a in alerts if a.level == 'info'])
             }
         }

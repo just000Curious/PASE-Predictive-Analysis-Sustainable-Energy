@@ -25,16 +25,16 @@ class Settings:
         models_ok = True
 
         if not os.path.exists(cls.MODEL_SUPPLY_PATH):
-            print(f"❌ ERROR: Supply model not found at {cls.MODEL_SUPPLY_PATH}")
+            print(f"ERROR: Supply model not found at {cls.MODEL_SUPPLY_PATH}")
             models_ok = False
         else:
-            print(f"✅ Supply model found: {cls.MODEL_SUPPLY_PATH}")
+            print(f"[OK] Supply model found: {cls.MODEL_SUPPLY_PATH}")
 
         if not os.path.exists(cls.MODEL_DEMAND_PATH):
-            print(f"❌ ERROR: Demand model not found at {cls.MODEL_DEMAND_PATH}")
+            print(f"ERROR: Demand model not found at {cls.MODEL_DEMAND_PATH}")
             models_ok = False
         else:
-            print(f"✅ Demand model found: {cls.MODEL_DEMAND_PATH}")
+            print(f"[OK] Demand model found: {cls.MODEL_DEMAND_PATH}")
 
         return models_ok
 

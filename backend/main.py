@@ -72,7 +72,11 @@ async def run_simulation(request: SimulationRequest):
         # Override with any provided values from request (using safe method)
         request_dict = request.model_dump()
         for key in ['turbine_count', 'turbine_availability', 'battery_capacity_mwh',
-                    'initial_battery_mwh', 'buy_price_per_mwh', 'sell_price_per_mwh']:
+                    'initial_battery_mwh', 'buy_price_per_mwh', 'sell_price_per_mwh',
+                    'community_demand_percent', 'community_base_load_mw',
+                    'battery_max_charge_mw', 'battery_max_discharge_mw',
+                    'low_wind_threshold', 'high_wind_threshold',
+                    'battery_low_threshold', 'battery_high_threshold']:
             if key in request_dict and request_dict[key] is not None:
                 config[key] = request_dict[key]
 
@@ -92,9 +96,12 @@ async def run_simulation(request: SimulationRequest):
         # Run simulation
         simulation_data, alerts = simulation_service.run_simulation(weather_df)
 
-        # Debug: Check what alerts are being generated
+        # Debug: Check what alerts are being generated (encode-safe for Windows)
         alert_messages = [alert.message for alert in alerts]
-        print(f"Generated alerts: {alert_messages}")
+        try:
+            print(f"Generated alerts: {alert_messages}")
+        except UnicodeEncodeError:
+            print(f"Generated alerts: {len(alerts)} alerts (some contain special chars)")
 
         # Find maintenance windows
         maintenance_windows = simulation_service.find_maintenance_windows(simulation_data)
@@ -134,6 +141,31 @@ async def health_check():
     }
 
 
+@app.get("/api/health/detailed")
+async def detailed_health_check():
+    """Detailed health check showing ML model status, weather source, and config (FIX #7)"""
+    from services.simulation_service import _using_real_models
+    return {
+        "status": "healthy",
+        "timestamp": datetime.now().isoformat(),
+        "version": "2.0.0",
+        "ml_models": {
+            "status": "real" if _using_real_models else "dummy_fallback",
+            "supply_model": "loaded" if _using_real_models else "physics_fallback",
+            "demand_model": "loaded" if _using_real_models else "physics_fallback",
+        },
+        "weather_source": "OpenWeatherMap API (3-hour forecast)",
+        "config": {
+            "turbine_count": 50,
+            "turbine_rated_mw": 3.0,
+            "system_capacity_mw": 150.0,
+            "battery_capacity_mwh": 300.0,
+            "buy_price_per_mwh": 150.0,
+            "sell_price_per_mwh": 40.0,
+        }
+    }
+
+
 # Add exception handler for CORS
 @app.middleware("http")
 async def add_cors_header(request: Request, call_next):
@@ -147,4 +179,4 @@ async def add_cors_header(request: Request, call_next):
 if __name__ == "__main__":
     import uvicorn
 
-    uvicorn.run(app, host="0.0.0.0", port=8000, log_level="debug")
+    uvicorn.run(app, host="0.0.0.0", port=8001, log_level="debug")
