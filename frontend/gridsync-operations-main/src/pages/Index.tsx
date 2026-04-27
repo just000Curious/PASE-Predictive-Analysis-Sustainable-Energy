@@ -467,9 +467,6 @@ const Index = () => {
                     <p className="text-[11px] text-muted-foreground text-center py-3">No scheduled maintenance</p>
                   ) : (
                     maintenanceWindows.map((window, idx) => (
-                      <div key={idx} className="p-2 border border-border rounded-lg text-xs bg-muted/30">
-                        <div className="flex items-center justify-between mb-0.5">
-                          <span className="font-semibold text-foreground text-[11px]">
                       <div key={idx} className="p-2 rounded-lg bg-muted/30 border border-border/50">
                         <div className="flex justify-between items-center mb-1">
                           <span className="text-[10px] font-bold text-primary">WINDOW #{idx + 1}</span>
