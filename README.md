@@ -128,3 +128,7 @@ Then open http://localhost:5173 in your browser and click **RUN SIMULATION**.
 | Frontend | React 18, TypeScript, Vite |
 | UI | TailwindCSS, shadcn/ui, Recharts |
 | Reports | jsPDF |
+
+---
+
+Built with ⚡ by **Abhishek Bhosale**

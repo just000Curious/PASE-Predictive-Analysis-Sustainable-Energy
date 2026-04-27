@@ -550,6 +550,14 @@ const Index = () => {
           </div>
         )}
       </main>
+      <footer className="py-8 border-t border-border/20 mt-12 mb-4">
+        <div className="container mx-auto px-4 flex flex-col items-center gap-2">
+          <div className="text-[10px] text-muted-foreground uppercase tracking-[0.3em] opacity-40 font-medium">
+            Designed & Engineered by Abhishek Bhosale
+          </div>
+          <div className="w-8 h-px bg-primary/20" />
+        </div>
+      </footer>
     </div>
   );
 };
