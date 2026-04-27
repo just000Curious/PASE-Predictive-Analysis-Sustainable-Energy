@@ -112,7 +112,7 @@ const Index = () => {
   const liveIntervalRef = useRef<NodeJS.Timeout | null>(null);
 
   // Your FastAPI backend URL
-  const API_BASE = 'http://localhost:8001';
+  const API_BASE = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8001';
 
   const runSimulation = async (isLiveUpdate: boolean = false) => {
     if (isRunning && !isLiveUpdate) return; // Don't run if already running (except for live updates)

@@ -1,0 +1,28 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+venv/
+ENV/
+env/
+.env
+
+# Models (Keep if small, ignore if using git-lfs or external storage)
+# In this case, models are ~112MB, which is fine for most GitHub repos (100MB limit per file)
+# backend/models/power_demand_model.joblib is ~81MB, backend/models/power_supply_model.joblib is ~30MB.
+# They are within the 100MB limit.
+
+# Node
+node_modules/
+dist/
+dist-ssr/
+*.local
+
+# IDEs
+.idea/
+.vscode/
+
+# Project specific
+project_showcase_demo.mp4
+datasets/
