@@ -167,10 +167,12 @@ const Index = () => {
         if (mode === 'LIVE' && simulationData.length > 0) {
           // For LIVE mode, append only the latest data point
           const newDataPoint = data.simulation_data[data.simulation_data.length - 1];
-          setSimulationData(prev => {
-            const newData = [...prev.slice(-23), newDataPoint]; // Keep last 23 + new = 24 points
-            return newData;
-          });
+          if (newDataPoint) {
+            setSimulationData(prev => {
+              const newData = [...prev.slice(-23), newDataPoint]; // Keep last 23 + new = 24 points
+              return newData;
+            });
+          }
 
           // Update alerts
           if (data.alerts && data.alerts.length > 0) {
@@ -449,7 +451,7 @@ const Index = () => {
                       >
                         <div className="font-medium text-[11px]">{alert.message}</div>
                         <div className="text-[9px] opacity-70 mt-0.5">
-                          {new Date(alert.timestamp).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}
+                          {alert.timestamp ? new Date(alert.timestamp).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}) : 'N/A'}
                         </div>
                       </div>
                     ))
@@ -468,19 +470,18 @@ const Index = () => {
                       <div key={idx} className="p-2 border border-border rounded-lg text-xs bg-muted/30">
                         <div className="flex items-center justify-between mb-0.5">
                           <span className="font-semibold text-foreground text-[11px]">
-                            Score: {(window.score * 100).toFixed(0)}%
-                          </span>
-                          <span className={`text-[10px] px-1.5 py-0.5 rounded-full ${
-                            window.score > 0.7 ? 'bg-success/10 text-success' : 'bg-warning/10 text-warning'
-                          }`}>
-                            {window.score > 0.7 ? 'Good' : 'Fair'}
+                      <div key={idx} className="p-2 rounded-lg bg-muted/30 border border-border/50">
+                        <div className="flex justify-between items-center mb-1">
+                          <span className="text-[10px] font-bold text-primary">WINDOW #{idx + 1}</span>
+                          <span className="text-[10px] font-mono bg-primary/10 text-primary px-1.5 py-0.5 rounded">
+                            SCORE: {(window.score || 0).toFixed(2)}
                           </span>
                         </div>
-                        <div className="text-[10px] text-muted-foreground">
-                          {new Date(window.start_time).toLocaleTimeString()} - {new Date(window.end_time).toLocaleTimeString()}
+                        <div className="text-[11px] font-medium text-foreground">
+                          {window.start_time ? new Date(window.start_time).toLocaleTimeString() : 'N/A'} - {window.end_time ? new Date(window.end_time).toLocaleTimeString() : 'N/A'}
                         </div>
                         <div className="text-[10px] text-muted-foreground">
-                          Lost: {window.lost_generation_mwh.toFixed(1)} MWh | Wind: {window.avg_wind_speed.toFixed(1)} m/s
+                          Lost: {(window.lost_generation_mwh || 0).toFixed(1)} MWh | Wind: {(window.avg_wind_speed || 0).toFixed(1)} m/s
                         </div>
                       </div>
                     ))
@@ -489,39 +490,53 @@ const Index = () => {
               </div>
 
               {/* Summary KPIs */}
-              {summary && (
+              {summary && summary.operational && (
                 <div className="card-elevated p-3">
                   <h3 className="text-xs font-semibold text-foreground mb-2">Operational Summary</h3>
                   <div className="space-y-1 text-xs">
                     <div className="flex justify-between items-center">
                       <span className="text-muted-foreground text-[11px]">Surplus Hours</span>
-                      <span className="font-mono text-[11px] font-semibold text-success">{summary.operational.surplus_hours}h</span>
+                      <span className="font-mono text-[11px] font-semibold text-success">
+                        {(summary.operational.surplus_hours || 0)}h
+                      </span>
                     </div>
                     <div className="flex justify-between items-center">
                       <span className="text-muted-foreground text-[11px]">Deficit Hours</span>
-                      <span className="font-mono text-[11px] font-semibold text-destructive">{summary.operational.deficit_hours}h</span>
+                      <span className="font-mono text-[11px] font-semibold text-destructive">
+                        {(summary.operational.deficit_hours || 0)}h
+                      </span>
                     </div>
                     <div className="flex justify-between items-center">
                       <span className="text-muted-foreground text-[11px]">Balanced Hours</span>
-                      <span className="font-mono text-[11px] font-semibold text-foreground">{summary.operational.balanced_hours}h</span>
+                      <span className="font-mono text-[11px] font-semibold text-foreground">
+                        {(summary.operational.balanced_hours || 0)}h
+                      </span>
                     </div>
                     <div className="border-t border-border my-1.5" />
                     <div className="flex justify-between items-center">
                       <span className="text-muted-foreground text-[11px]">Total Generation</span>
-                      <span className="font-mono text-[11px] font-semibold text-supply">{summary.operational.total_generation_mwh.toFixed(1)} MWh</span>
+                      <span className="font-mono text-[11px] font-semibold text-supply">
+                        {(summary.operational.total_generation_mwh || 0).toFixed(1)} MWh
+                      </span>
                     </div>
                     <div className="flex justify-between items-center">
                       <span className="text-muted-foreground text-[11px]">Total Consumption</span>
-                      <span className="font-mono text-[11px] font-semibold text-demand">{summary.operational.total_consumption_mwh.toFixed(1)} MWh</span>
+                      <span className="font-mono text-[11px] font-semibold text-demand">
+                        {(summary.operational.total_consumption_mwh || 0).toFixed(1)} MWh
+                      </span>
                     </div>
                     <div className="border-t border-border my-1.5" />
                     <div className="flex justify-between items-center">
                       <span className="text-muted-foreground text-[11px]">Capacity Factor</span>
-                      <span className="font-mono text-[11px] font-semibold text-foreground">{summary.operational.capacity_factor}</span>
+                      <span className="font-mono text-[11px] font-semibold text-foreground">
+                        {summary.operational.capacity_factor || 'N/A'}
+                      </span>
                     </div>
                     <div className="flex justify-between items-center">
                       <span className="text-muted-foreground text-[11px]">Renewable %</span>
-                      <span className="font-mono text-[11px] font-semibold text-primary">{summary.operational.renewable_penetration}</span>
+                      <span className="font-mono text-[11px] font-semibold text-primary">
+                        {summary.operational.renewable_penetration || 'N/A'}
+                      </span>
                     </div>
                   </div>
                 </div>
