@@ -552,10 +552,10 @@ const Index = () => {
       </main>
       <footer className="py-8 border-t border-border/20 mt-12 mb-4">
         <div className="container mx-auto px-4 flex flex-col items-center gap-2">
-          <div className="text-[10px] text-muted-foreground uppercase tracking-[0.3em] opacity-40 font-medium">
+          <div className="text-[10px] text-primary uppercase tracking-[0.4em] font-semibold">
             Designed & Engineered by Abhishek Bhosale
           </div>
-          <div className="w-8 h-px bg-primary/20" />
+          <div className="w-12 h-px bg-primary/40" />
         </div>
       </footer>
     </div>
