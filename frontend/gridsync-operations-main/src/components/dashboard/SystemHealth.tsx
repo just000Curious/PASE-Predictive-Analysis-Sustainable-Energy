@@ -43,25 +43,25 @@ const SystemHealth = ({
   return (
     <div className="card-elevated p-2.5 h-full flex items-center gap-3">
       <h4 className="text-[10px] font-semibold text-muted-foreground uppercase tracking-wide whitespace-nowrap">Health</h4>
-      <div className="flex items-center gap-3 flex-1">
+      <div className="grid grid-cols-2 gap-x-4 gap-y-2 flex-1">
         {metrics.map((metric) => {
           const Icon = metric.icon;
           return (
-            <div key={metric.label} className="flex items-center gap-1.5 flex-1 min-w-0">
-              <Icon className={`w-3 h-3 text-${metric.color} flex-shrink-0`} />
-              <div className="flex-1 min-w-0">
-                <div className="flex items-center justify-between gap-1">
-                  <span className="text-[9px] text-muted-foreground truncate">{metric.label}</span>
-                  <span className={`text-[9px] font-mono font-semibold text-${metric.color}`}>
-                    {metric.value}%
-                  </span>
-                </div>
-                <div className="h-0.5 bg-muted rounded-full overflow-hidden mt-0.5">
-                  <div
-                    className={`h-full rounded-full bg-${metric.color} transition-all duration-500`}
-                    style={{ width: `${metric.value}%` }}
-                  />
-                </div>
+            <div key={metric.label} className="flex flex-col gap-1 min-w-0">
+              <div className="flex items-center gap-1.5 min-w-0">
+                <Icon className={`w-3.5 h-3.5 text-${metric.color} flex-shrink-0`} />
+                <span className="text-[9px] text-muted-foreground truncate uppercase font-bold tracking-tight">
+                  {metric.label}
+                </span>
+                <span className={`text-[10px] font-mono font-bold text-${metric.color} ml-auto`}>
+                  {metric.value.toFixed(0)}%
+                </span>
+              </div>
+              <div className="h-1 bg-muted/40 rounded-full overflow-hidden">
+                <div
+                  className={`h-full rounded-full bg-${metric.color} transition-all duration-500`}
+                  style={{ width: `${metric.value}%` }}
+                />
               </div>
             </div>
           );

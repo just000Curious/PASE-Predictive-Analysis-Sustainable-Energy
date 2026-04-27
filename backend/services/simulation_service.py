@@ -281,7 +281,9 @@ class SimulationService:
                 from_grid_mw=from_grid,
                 status=status,
                 wind_speed=wind_speed,
-                wind_direction=wind_dir
+                wind_direction=wind_dir,
+                temperature=row.get('Temperature', 22.0),
+                humidity=row.get('Forecast_Confidence', 0.8) * 100 # Using confidence as a proxy for humidity mock
             )
 
             results.append(result)

@@ -183,28 +183,33 @@ const ReportDownload = ({ simulationData, alerts, summary }: ReportDownloadProps
   const hasData = simulationData.length > 0;
 
   return (
-    <div className="card-elevated p-2.5 h-full flex items-center gap-2">
-      <span className="text-[10px] font-semibold text-muted-foreground uppercase tracking-wide whitespace-nowrap">Export</span>
-      <Button 
-        variant="ghost" 
-        size="sm" 
-        onClick={downloadCSV}
-        disabled={!hasData}
-        className="h-7 px-2 gap-1.5 text-xs"
-      >
-        <Download className="w-3 h-3" />
-        CSV
-      </Button>
-      <Button 
-        variant="ghost" 
-        size="sm" 
-        onClick={downloadPDF}
-        disabled={!hasData}
-        className="h-7 px-2 gap-1.5 text-xs"
-      >
-        <FileText className="w-3 h-3" />
-        PDF
-      </Button>
+    <div className="card-elevated p-2.5 h-full flex items-center gap-3">
+      <div className="flex flex-col">
+        <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider">Export</span>
+        <span className="text-[8px] text-muted-foreground/60 uppercase">Reports</span>
+      </div>
+      <div className="flex items-center gap-2">
+        <Button 
+          variant="outline" 
+          size="sm" 
+          onClick={downloadCSV}
+          disabled={!hasData}
+          className="h-8 px-3 gap-1.5 text-[10px] font-bold border-border/50 hover:bg-muted/50"
+        >
+          <Download className="w-3 h-3 text-primary" />
+          CSV
+        </Button>
+        <Button 
+          variant="outline" 
+          size="sm" 
+          onClick={downloadPDF}
+          disabled={!hasData}
+          className="h-8 px-3 gap-1.5 text-[10px] font-bold border-border/50 hover:bg-muted/50"
+        >
+          <FileText className="w-3 h-3 text-primary" />
+          PDF
+        </Button>
+      </div>
     </div>
   );
 };

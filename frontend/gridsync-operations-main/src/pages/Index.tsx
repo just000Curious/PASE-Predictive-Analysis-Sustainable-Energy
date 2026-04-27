@@ -6,6 +6,7 @@ import EnergyCharts from '@/components/dashboard/EnergyCharts';
 import EnergyFlowSchematic from '@/components/dashboard/EnergyFlowSchematic';
 import ReportDownload from '@/components/dashboard/ReportDownload';
 import SystemHealth from '@/components/dashboard/SystemHealth';
+import WeatherForecast from '@/components/dashboard/WeatherForecast';
 import DataFeed from '@/components/dashboard/DataFeed';
 import { useToast } from '@/hooks/use-toast';
 
@@ -24,6 +25,8 @@ export interface SimulationDataPoint {
   status: string;
   wind_speed: number;
   wind_direction: number;
+  temperature: number;
+  humidity: number;
 }
 
 export interface Alert {
@@ -369,8 +372,9 @@ const Index = () => {
         </div>
 
         {/* Control Panel Row */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-3">
-          <div className="lg:col-span-4">
+        <div className="flex flex-col lg:flex-row items-stretch lg:items-center gap-3 bg-card/40 p-3 rounded-xl border border-border/50 mb-6">
+          {/* 1. Mode Selector */}
+          <div className="w-full lg:w-[320px] flex-shrink-0">
             <OperationalModes
               mode={mode}
               setMode={setMode}
@@ -388,7 +392,9 @@ const Index = () => {
               setDateRange={setDateRange}
             />
           </div>
-          <div className="lg:col-span-6">
+          
+          {/* 2. System Health */}
+          <div className="flex-1 min-w-0">
             <SystemHealth
               gridStability={latestData ? (Math.abs(latestData.net_balance_mw) < 10 ? 95 : 75) : 95}
               batteryHealth={latestData ? latestData.battery_percent : 88}
@@ -396,7 +402,14 @@ const Index = () => {
               mlConfidence={92}
             />
           </div>
-          <div className="lg:col-span-2">
+
+          {/* 3. Weather Forecast (NEW) */}
+          <div className="w-full lg:w-[220px] flex-shrink-0">
+            <WeatherForecast data={latestData} />
+          </div>
+
+          {/* 4. Export Section */}
+          <div className="w-full lg:w-auto flex-shrink-0">
             <ReportDownload
               simulationData={simulationData}
               alerts={alerts}

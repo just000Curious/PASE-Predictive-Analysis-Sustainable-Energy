@@ -50,6 +50,8 @@ class SimulationResult(BaseModel):
     status: str
     wind_speed: float
     wind_direction: float
+    temperature: float
+    humidity: float
 
 
 class MaintenanceWindow(BaseModel):
