@@ -353,6 +353,17 @@ const Index = () => {
       />
 
       <main className="container mx-auto px-4 py-3 space-y-3">
+
+        {/* === HERO HEADER === */}
+        <div className="text-center py-6 mb-2">
+          <h1 className="text-2xl md:text-3xl font-bold text-foreground tracking-tight">
+            ⚡ AI-Powered Wind Energy Forecasting System
+          </h1>
+          <p className="text-sm text-muted-foreground mt-2 max-w-xl mx-auto">
+            Predicts energy generation and demand to support smarter grid decisions.
+          </p>
+        </div>
+
         {/* Mode Indicator */}
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
@@ -421,6 +432,53 @@ const Index = () => {
           <>
             {/* Metrics Grid */}
             <MetricsGrid data={latestData} />
+
+            {/* === NET GRID BALANCE + SMART RECOMMENDATION === */}
+            {(() => {
+              const balance = latestData.net_balance_mw;
+              const isSurplus = balance >= 0;
+              return (
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  {/* Net Grid Balance Card */}
+                  <div className={`rounded-xl border p-5 flex flex-col gap-2 ${
+                    isSurplus
+                      ? 'bg-green-950/40 border-green-700/40'
+                      : 'bg-red-950/40 border-red-700/40'
+                  }`}>
+                    <span className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">Net Grid Balance</span>
+                    <div className={`text-3xl font-bold font-mono ${
+                      isSurplus ? 'text-green-400' : 'text-red-400'
+                    }`}>
+                      {isSurplus ? '⚡' : '⚠️'} {isSurplus ? '+' : ''}{balance.toFixed(1)} MW
+                    </div>
+                    <div className={`text-sm font-semibold ${
+                      isSurplus ? 'text-green-500' : 'text-red-500'
+                    }`}>
+                      {isSurplus ? 'Grid Surplus' : 'Grid Deficit'}
+                    </div>
+                    <div className="text-xs text-muted-foreground mt-1">
+                      Generation: <span className="text-green-400 font-mono">{latestData.simulated_supply_mw.toFixed(1)} MW</span>
+                      &nbsp;•&nbsp;
+                      Demand: <span className="text-red-400 font-mono">{latestData.simulated_demand_mw.toFixed(1)} MW</span>
+                    </div>
+                  </div>
+
+                  {/* Smart Recommendation Card */}
+                  <div className="rounded-xl border border-primary/30 bg-primary/5 p-5 flex flex-col gap-2">
+                    <span className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">🤖 AI Recommendation</span>
+                    <div className="text-base font-semibold text-foreground leading-snug">
+                      {isSurplus
+                        ? 'Export surplus energy or store in battery'
+                        : 'Use battery reserves or import energy from grid'
+                      }
+                    </div>
+                    <div className="text-xs text-muted-foreground mt-1">
+                      Based on current generation vs. community demand.
+                    </div>
+                  </div>
+                </div>
+              );
+            })()}
 
             {/* Energy Flow Schematic */}
             <EnergyFlowSchematic data={latestData} />
