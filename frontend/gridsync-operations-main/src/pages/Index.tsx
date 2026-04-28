@@ -94,6 +94,7 @@ interface DateRange {
 
 const Index = () => {
   const [mode, setMode] = useState<'LIVE' | 'MANUAL' | 'CUSTOM'>('MANUAL'); // Start with MANUAL
+  const [showHelp, setShowHelp] = useState(false);
   const [turbineCount, setTurbineCount] = useState(50);
   const [turbineAvailability, setTurbineAvailability] = useState(0.95);
   const [batteryCapacity, setBatteryCapacity] = useState(300);
@@ -362,6 +363,40 @@ const Index = () => {
           <p className="text-sm text-muted-foreground mt-2 max-w-xl mx-auto">
             Predicts energy generation and demand to support smarter grid decisions.
           </p>
+        </div>
+
+        {/* === HOW THIS SYSTEM WORKS (Collapsible) === */}
+        <div className="border border-border/60 rounded-xl overflow-hidden">
+          <button
+            onClick={() => setShowHelp(!showHelp)}
+            className="w-full flex items-center justify-between px-5 py-3.5 text-left bg-card/60 hover:bg-card/90 transition-colors"
+          >
+            <span className="text-sm font-semibold text-foreground flex items-center gap-2">
+              ℹ️ How This System Works
+            </span>
+            <span className="text-muted-foreground text-xs">{showHelp ? '▲ Hide' : '▼ Show'}</span>
+          </button>
+          {showHelp && (
+            <div className="px-5 py-4 bg-muted/20 border-t border-border/40 grid md:grid-cols-2 gap-6">
+              <div>
+                <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-2">What It Does</p>
+                <ul className="space-y-1.5 text-sm text-foreground/80">
+                  <li className="flex gap-2"><span className="text-primary">•</span> Predicts wind energy generation using ML models trained on real weather data.</li>
+                  <li className="flex gap-2"><span className="text-primary">•</span> Forecasts electricity demand for the connected community.</li>
+                  <li className="flex gap-2"><span className="text-primary">•</span> Simulates real-world grid conditions including battery and fault scenarios.</li>
+                </ul>
+              </div>
+              <div>
+                <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-2">How To Use</p>
+                <ol className="space-y-1.5 text-sm text-foreground/80">
+                  <li className="flex gap-2"><span className="text-primary font-bold">1.</span> Select a mode: MANUAL (custom inputs), LIVE (real-time), or CUSTOM (historical).</li>
+                  <li className="flex gap-2"><span className="text-primary font-bold">2.</span> Adjust turbine count, availability, and battery capacity as needed.</li>
+                  <li className="flex gap-2"><span className="text-primary font-bold">3.</span> Click <strong>RUN SIMULATION</strong> to generate predictions.</li>
+                  <li className="flex gap-2"><span className="text-primary font-bold">4.</span> View the Net Grid Balance and AI recommendation below.</li>
+                </ol>
+              </div>
+            </div>
+          )}
         </div>
 
         {/* Mode Indicator */}
