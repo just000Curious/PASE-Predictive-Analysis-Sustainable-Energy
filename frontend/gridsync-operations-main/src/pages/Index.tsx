@@ -356,10 +356,9 @@ const Index = () => {
         {/* Mode Indicator */}
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <div className={`w-3 h-3 rounded-full ${
-              mode === 'LIVE' ? 'bg-success animate-pulse' :
-              mode === 'MANUAL' ? 'bg-warning' : 'bg-primary'
-            }`} />
+            <div className={`w-3 h-3 rounded-full ${mode === 'LIVE' ? 'bg-success animate-pulse' :
+                mode === 'MANUAL' ? 'bg-warning' : 'bg-primary'
+              }`} />
             <span className="text-sm font-semibold">
               {mode} MODE {mode === 'LIVE' && `• Updates: ${liveUpdateCount}`}
             </span>
@@ -392,7 +391,7 @@ const Index = () => {
               setDateRange={setDateRange}
             />
           </div>
-          
+
           {/* 2. System Health */}
           <div className="flex-1 min-w-0">
             <SystemHealth
@@ -441,10 +440,9 @@ const Index = () => {
               {/* Alerts Panel */}
               <div className="card-elevated p-3">
                 <h3 className="text-xs font-semibold text-foreground mb-2 flex items-center gap-2">
-                  <span className={`w-1.5 h-1.5 rounded-full ${
-                    alerts.some(a => a.level === 'critical') ? 'bg-destructive animate-pulse' :
-                    alerts.some(a => a.level === 'warning') ? 'bg-warning' : 'bg-success'
-                  }`} />
+                  <span className={`w-1.5 h-1.5 rounded-full ${alerts.some(a => a.level === 'critical') ? 'bg-destructive animate-pulse' :
+                      alerts.some(a => a.level === 'warning') ? 'bg-warning' : 'bg-success'
+                    }`} />
                   Active Alerts ({alerts.length})
                 </h3>
                 <div className="space-y-1.5 max-h-48 overflow-y-auto">
@@ -454,17 +452,16 @@ const Index = () => {
                     alerts.slice(0, 5).map((alert, idx) => (
                       <div
                         key={idx}
-                        className={`p-2 rounded-lg text-xs border ${
-                          alert.level === 'critical'
+                        className={`p-2 rounded-lg text-xs border ${alert.level === 'critical'
                             ? 'bg-destructive/5 border-destructive/20 text-destructive'
                             : alert.level === 'warning'
-                            ? 'bg-warning/5 border-warning/20 text-warning'
-                            : 'bg-muted/50 border-border text-muted-foreground'
-                        }`}
+                              ? 'bg-warning/5 border-warning/20 text-warning'
+                              : 'bg-muted/50 border-border text-muted-foreground'
+                          }`}
                       >
                         <div className="font-medium text-[11px]">{alert.message}</div>
                         <div className="text-[9px] opacity-70 mt-0.5">
-                          {alert.timestamp ? new Date(alert.timestamp).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}) : 'N/A'}
+                          {alert.timestamp ? new Date(alert.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : 'N/A'}
                         </div>
                       </div>
                     ))
