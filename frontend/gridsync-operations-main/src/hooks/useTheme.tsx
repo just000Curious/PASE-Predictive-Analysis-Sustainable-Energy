@@ -15,9 +15,10 @@ export const ThemeProvider = ({ children }: { children: ReactNode }) => {
     if (typeof window !== 'undefined') {
       const stored = localStorage.getItem('pase-theme') as Theme;
       if (stored) return stored;
-      return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+      // Default to dark — dark dashboards look more professional/enterprise
+      return 'dark';
     }
-    return 'light';
+    return 'dark';
   });
 
   useEffect(() => {

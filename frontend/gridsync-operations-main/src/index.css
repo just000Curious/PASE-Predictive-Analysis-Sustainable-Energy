@@ -242,3 +242,171 @@
 ::-webkit-scrollbar-thumb:hover {
   @apply bg-muted-foreground/50;
 }
+
+/* ========================================
+   RECRUITER 6-SECOND CHECK — Premium Polish
+   ======================================== */
+
+/* Hero Gradient Animation */
+@keyframes gradientShift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+@keyframes subtleFloat {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-4px); }
+}
+
+.hero-gradient {
+  background: linear-gradient(
+    135deg,
+    hsl(142 76% 36% / 0.08) 0%,
+    hsl(221 83% 53% / 0.06) 25%,
+    hsl(262 83% 58% / 0.04) 50%,
+    hsl(142 76% 36% / 0.08) 75%,
+    hsl(221 83% 53% / 0.06) 100%
+  );
+  background-size: 400% 400%;
+  animation: gradientShift 12s ease infinite;
+}
+
+.dark .hero-gradient {
+  background: linear-gradient(
+    135deg,
+    hsl(142 76% 40% / 0.12) 0%,
+    hsl(213 94% 68% / 0.08) 25%,
+    hsl(262 83% 65% / 0.06) 50%,
+    hsl(142 76% 40% / 0.12) 75%,
+    hsl(213 94% 68% / 0.08) 100%
+  );
+  background-size: 400% 400%;
+  animation: gradientShift 12s ease infinite;
+}
+
+/* Glassmorphism overlay */
+.glass-overlay {
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  background: hsla(var(--card) / 0.6);
+  border: 1px solid hsla(var(--border) / 0.5);
+}
+
+/* Tech Badge Pill Styles */
+.tech-badge {
+  @apply inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-semibold tracking-wide;
+  background: hsla(var(--primary) / 0.08);
+  color: hsl(var(--primary));
+  border: 1px solid hsla(var(--primary) / 0.15);
+  transition: all 0.2s ease;
+}
+
+.tech-badge:hover {
+  background: hsla(var(--primary) / 0.15);
+  border-color: hsla(var(--primary) / 0.3);
+  transform: translateY(-1px);
+}
+
+.tech-badge-accent {
+  background: hsla(var(--accent) / 0.08);
+  color: hsl(var(--accent));
+  border-color: hsla(var(--accent) / 0.15);
+}
+
+.tech-badge-accent:hover {
+  background: hsla(var(--accent) / 0.15);
+  border-color: hsla(var(--accent) / 0.3);
+}
+
+/* Staggered Entrance Animations */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.animate-entrance {
+  animation: fadeInUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.animate-entrance-1 { animation-delay: 0ms; }
+.animate-entrance-2 { animation-delay: 80ms; }
+.animate-entrance-3 { animation-delay: 160ms; }
+.animate-entrance-4 { animation-delay: 240ms; }
+.animate-entrance-5 { animation-delay: 320ms; }
+.animate-entrance-6 { animation-delay: 400ms; }
+.animate-entrance-7 { animation-delay: 480ms; }
+
+/* Loading Skeleton */
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+.skeleton-pulse {
+  background: linear-gradient(
+    90deg,
+    hsl(var(--muted)) 25%,
+    hsl(var(--muted-foreground) / 0.08) 50%,
+    hsl(var(--muted)) 75%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.5s ease-in-out infinite;
+  border-radius: 0.5rem;
+}
+
+/* Social Link Hover Effects */
+.social-link {
+  @apply inline-flex items-center justify-center w-9 h-9 rounded-lg transition-all duration-200;
+  background: hsla(var(--muted) / 0.5);
+  color: hsl(var(--muted-foreground));
+}
+
+.social-link:hover {
+  background: hsla(var(--primary) / 0.1);
+  color: hsl(var(--primary));
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px hsla(var(--primary) / 0.15);
+}
+
+/* Live status dot with ring animation */
+@keyframes pingRing {
+  0% {
+    transform: scale(1);
+    opacity: 0.8;
+  }
+  75%, 100% {
+    transform: scale(2.5);
+    opacity: 0;
+  }
+}
+
+.live-dot {
+  @apply relative;
+}
+
+.live-dot::before {
+  content: '';
+  @apply absolute inset-0 rounded-full;
+  background: hsl(var(--success));
+  animation: pingRing 2s cubic-bezier(0, 0, 0.2, 1) infinite;
+}
+
+/* Hero title gradient text */
+.gradient-text {
+  background: linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(var(--accent)) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}

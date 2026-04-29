@@ -67,7 +67,7 @@ const DashboardHeader = ({ onRefresh, isRefreshing, alerts = [] }: DashboardHead
               </div>
               <div>
                 <h1 className="text-lg font-bold text-foreground tracking-tight">PASE CONSOLE</h1>
-                <p className="text-[10px] text-muted-foreground font-medium">Grid Intelligence v2.1</p>
+                <p className="text-[10px] text-muted-foreground font-medium">Predictive Analytics for Sustainable Energy</p>
               </div>
             </div>
             
