@@ -40,7 +40,7 @@ const WeatherForecast = ({ data }: WeatherForecastProps) => {
           const Icon = metric.icon;
           return (
             <div key={idx} className="flex items-center gap-2 justify-center py-1">
-              <div className={`p-1.5 rounded-lg bg-muted/50 ${metric.color}`}>
+              <div className={`p-1.5 rounded bg-muted/50 ${metric.color}`}>
                 <Icon className="w-3.5 h-3.5" />
               </div>
               <div className="flex flex-col min-w-0">

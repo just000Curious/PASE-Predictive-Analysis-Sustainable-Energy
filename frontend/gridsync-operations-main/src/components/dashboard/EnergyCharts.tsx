@@ -58,7 +58,7 @@ const EnergyCharts = ({ data }: EnergyChartsProps) => {
           contentStyle={{
             backgroundColor: 'hsl(var(--card))',
             border: '1px solid hsl(var(--border))',
-            borderRadius: '6px',
+            borderRadius: '3px',
           }}
         />
         <Legend />
@@ -167,7 +167,7 @@ const EnergyCharts = ({ data }: EnergyChartsProps) => {
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
       <Card className="p-6 bg-card border-border">
         <div className="flex items-center justify-between mb-4">
-          <h3 className="text-lg font-semibold text-foreground">Supply vs Demand</h3>
+          <h3 className="text-lg font-serif text-foreground">Supply vs Demand</h3>
           <Button
             variant="ghost"
             size="sm"
@@ -184,7 +184,7 @@ const EnergyCharts = ({ data }: EnergyChartsProps) => {
 
       <Card className="p-6 bg-card border-border">
         <div className="flex items-center justify-between mb-4">
-          <h3 className="text-lg font-semibold text-foreground">Battery State of Charge</h3>
+          <h3 className="text-lg font-serif text-foreground">Battery State of Charge</h3>
           <Button
             variant="ghost"
             size="sm"

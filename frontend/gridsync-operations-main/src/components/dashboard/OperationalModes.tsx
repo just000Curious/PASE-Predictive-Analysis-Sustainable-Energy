@@ -101,7 +101,7 @@ const OperationalModes = ({
       <TabsContent value="LIVE" className="mt-1">
         <Card className="p-2 bg-card border-border">
           <div className="flex items-center gap-1.5">
-            <div className="w-1.5 h-1.5 rounded-full bg-success animate-pulse flex-shrink-0" />
+            <div className="w-1.5 h-1.5 rounded-sm bg-success animate-pulse flex-shrink-0" />
             <p className="text-[10px] text-muted-foreground">
               Real-time monitoring active. Data refreshes every 5 seconds.
             </p>

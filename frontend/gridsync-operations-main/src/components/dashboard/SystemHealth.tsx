@@ -57,9 +57,9 @@ const SystemHealth = ({
                   {metric.value.toFixed(0)}%
                 </span>
               </div>
-              <div className="h-1 bg-muted/40 rounded-full overflow-hidden">
+              <div className="h-1 bg-muted/40 rounded-sm overflow-hidden">
                 <div
-                  className={`h-full rounded-full bg-${metric.color} transition-all duration-500`}
+                  className={`h-full rounded-sm bg-${metric.color} transition-all duration-500`}
                   style={{ width: `${metric.value}%` }}
                 />
               </div>

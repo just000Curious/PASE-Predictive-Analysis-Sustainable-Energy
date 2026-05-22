@@ -56,17 +56,17 @@ const DashboardHeader = ({ onRefresh, isRefreshing, alerts = [] }: DashboardHead
   };
 
   return (
-    <header className="border-b border-border bg-card/80 backdrop-blur-sm sticky top-0 z-50">
+    <header className="border-b border-border bg-card sticky top-0 z-50">
       <div className="container mx-auto px-4 py-3">
         <div className="grid grid-cols-[auto_1fr_auto] items-center gap-4">
           {/* Left - Logo & Status */}
           <div className="flex items-center gap-4">
             <div className="flex items-center gap-3">
-              <div className="p-2 bg-primary/10 rounded-xl">
+              <div className="p-1.5 bg-primary/10 rounded">
                 <Zap className="w-5 h-5 text-primary" />
               </div>
               <div>
-                <h1 className="text-lg font-bold text-foreground tracking-tight">PASE CONSOLE</h1>
+                <h1 className="text-lg font-serif text-foreground tracking-tight">PASE CONSOLE</h1>
                 <p className="text-[10px] text-muted-foreground font-medium">Predictive Analytics for Sustainable Energy</p>
               </div>
             </div>
@@ -81,7 +81,7 @@ const DashboardHeader = ({ onRefresh, isRefreshing, alerts = [] }: DashboardHead
 
           {/* Center - Clock */}
           <div className="hidden lg:flex justify-center">
-            <div className="flex items-center gap-2 px-3 py-1.5 bg-muted/50 rounded-lg">
+            <div className="flex items-center gap-2 px-3 py-1.5 bg-muted/50 rounded">
               <Clock className="w-3.5 h-3.5 text-muted-foreground" />
               <span className="font-mono text-xs font-medium text-foreground tabular-nums">
                 {formatUTC(utcTime)}

@@ -42,7 +42,7 @@ const DataFeed = ({ data }: DataFeedProps) => {
       <div className="flex items-center gap-2 mb-4">
         <Activity className="w-4 h-4 text-primary" />
         <h4 className="text-sm font-semibold text-foreground">Real-time Data Feed</h4>
-        <span className="ml-auto w-2 h-2 bg-success rounded-full animate-pulse" />
+        <span className="ml-auto w-2 h-2 bg-success rounded-sm animate-pulse" />
       </div>
       
       <div className="space-y-3 max-h-48 overflow-y-auto">
@@ -56,7 +56,7 @@ const DataFeed = ({ data }: DataFeedProps) => {
             return (
               <div 
                 key={idx} 
-                className={`flex items-start gap-3 p-2 rounded-lg transition-colors ${
+                className={`flex items-start gap-3 p-2 rounded transition-colors ${
                   item.isNew ? 'bg-primary/5' : ''
                 }`}
               >

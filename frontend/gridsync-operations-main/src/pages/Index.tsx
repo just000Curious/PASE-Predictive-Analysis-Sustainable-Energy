@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { Github, Linkedin, ArrowRight, Server, Database, CloudRain } from 'lucide-react';
+import { Github, Linkedin, ArrowRight, Server, Database, CloudRain, Zap, AlertTriangle } from 'lucide-react';
 import DashboardHeader from '@/components/dashboard/DashboardHeader';
 import OperationalModes from '@/components/dashboard/OperationalModes';
 import MetricsGrid from '@/components/dashboard/MetricsGrid';
@@ -366,77 +366,62 @@ const Index = () => {
 
       <main className="container mx-auto px-4 py-3 space-y-3">
 
-        {/* === CINEMATIC HERO BANNER === */}
-        <div className="hero-gradient rounded-2xl border border-border/40 overflow-hidden animate-entrance animate-entrance-1">
-          <div className="px-6 py-8 md:py-10 text-center">
-            <div className="flex items-center justify-center gap-2 mb-4">
-              <div className="live-dot w-2.5 h-2.5 rounded-full bg-success" />
-              <span className="text-[11px] font-semibold text-success tracking-wider uppercase">System Online • ML Models Active</span>
+        {/* Status Header */}
+        <div className="bg-card border border-border rounded border-l-4 border-l-primary animate-entrance animate-entrance-1">
+          <div className="px-6 py-5">
+            <div className="flex items-center justify-between flex-wrap gap-4">
+              <div>
+                <h1 className="text-2xl md:text-3xl font-serif text-foreground tracking-tight leading-tight">
+                  PASE — Predictive Analytics for Sustainable Energy
+                </h1>
+                <p className="text-sm text-muted-foreground mt-1.5 max-w-2xl">
+                  ML-powered wind energy forecasting. Real-time supply, demand, and grid action predictions.
+                </p>
+              </div>
+              <div className="flex items-center gap-1.5">
+                <span className="w-2 h-2 rounded-full bg-success" />
+                <span className="text-xs font-medium text-muted-foreground">System Online</span>
+              </div>
             </div>
-            <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-foreground tracking-tight leading-tight mb-3">
-              <span className="gradient-text">PASE</span> — Predictive Analytics{' '}
-              <br className="hidden sm:block" />
-              for Sustainable Energy
-            </h1>
-            <p className="text-sm md:text-base text-muted-foreground max-w-2xl mx-auto leading-relaxed mb-6">
-              ML-powered wind energy forecasting that predicts supply, demand, and optimal grid actions in real-time using live weather data.
-            </p>
-            <div className="flex flex-wrap items-center justify-center gap-2">
-              <span className="tech-badge">🐍 Python</span>
-              <span className="tech-badge">⚡ FastAPI</span>
-              <span className="tech-badge tech-badge-accent">⚛️ React</span>
-              <span className="tech-badge tech-badge-accent">📊 Recharts</span>
-              <span className="tech-badge">🧠 Scikit-Learn</span>
-              <span className="tech-badge">🌤️ Live Weather API</span>
+            <div className="flex flex-wrap items-center gap-3 mt-4 pt-3 border-t border-border">
+              {['Python', 'FastAPI', 'React', 'Recharts', 'Scikit-Learn', 'Live Weather API'].map(tech => (
+                <span key={tech} className="text-[11px] font-medium text-muted-foreground px-2 py-0.5 rounded bg-muted border border-border">
+                  {tech}
+                </span>
+              ))}
             </div>
           </div>
         </div>
         {/* === ARCHITECTURE & KEY STATS STRIP === */}
         <div className="grid grid-cols-1 md:grid-cols-12 gap-3 animate-entrance animate-entrance-2 mb-6 mt-3">
           {/* Architecture Pipeline */}
-          <div className="md:col-span-7 bg-card/60 backdrop-blur-sm border border-border/50 rounded-xl p-4 flex flex-wrap sm:flex-nowrap items-center justify-between gap-3 overflow-hidden shadow-sm">
-            <div className="flex flex-col items-center gap-1.5 px-2 z-10">
-              <div className="p-2 bg-sky-500/10 rounded-lg">
-                <CloudRain className="w-5 h-5 text-sky-400" />
-              </div>
-              <span className="text-xs font-bold tracking-wide text-foreground">Live Weather</span>
+          <div className="md:col-span-7 bg-card border border-border rounded p-4 flex flex-wrap sm:flex-nowrap items-center justify-between gap-3 overflow-hidden">
+            <div className="flex flex-col items-center gap-1.5 px-2">
+              <CloudRain className="w-5 h-5 text-muted-foreground" />
+              <span className="text-xs font-medium text-foreground">Live Weather</span>
             </div>
             
-            <div className="hidden sm:flex flex-1 items-center justify-center relative">
-              <div className="absolute inset-0 flex items-center">
-                <div className="w-full border-t border-dashed border-muted-foreground/30"></div>
-              </div>
-              <div className="bg-card px-2 relative z-10 animate-pulse text-muted-foreground/60">
-                <ArrowRight className="w-5 h-5" />
-              </div>
+            <div className="hidden sm:flex flex-1 items-center justify-center">
+              <span className="text-muted-foreground/50 text-sm">→</span>
             </div>
 
-            <div className="flex flex-col items-center gap-1.5 px-2 z-10">
-              <div className="p-2 bg-accent/10 rounded-lg">
-                <Server className="w-5 h-5 text-accent" />
-              </div>
-              <span className="text-xs font-bold tracking-wide text-foreground">FastAPI ML Engine</span>
+            <div className="flex flex-col items-center gap-1.5 px-2">
+              <Server className="w-5 h-5 text-muted-foreground" />
+              <span className="text-xs font-medium text-foreground">FastAPI ML Engine</span>
             </div>
             
-            <div className="hidden sm:flex flex-1 items-center justify-center relative">
-              <div className="absolute inset-0 flex items-center">
-                <div className="w-full border-t border-dashed border-muted-foreground/30"></div>
-              </div>
-              <div className="bg-card px-2 relative z-10 animate-pulse text-muted-foreground/60" style={{ animationDelay: '500ms' }}>
-                <ArrowRight className="w-5 h-5" />
-              </div>
+            <div className="hidden sm:flex flex-1 items-center justify-center">
+              <span className="text-muted-foreground/50 text-sm">→</span>
             </div>
 
-            <div className="flex flex-col items-center gap-1.5 px-2 z-10">
-              <div className="p-2 bg-primary/10 rounded-lg">
-                <Database className="w-5 h-5 text-primary" />
-              </div>
-              <span className="text-xs font-bold tracking-wide text-foreground">React Dashboard</span>
+            <div className="flex flex-col items-center gap-1.5 px-2">
+              <Database className="w-5 h-5 text-muted-foreground" />
+              <span className="text-xs font-medium text-foreground">React Dashboard</span>
             </div>
           </div>
 
           {/* Key Stats */}
-          <div className="md:col-span-5 bg-card/60 backdrop-blur-sm border border-border/50 rounded-xl p-3 flex items-center justify-around divide-x divide-border/50">
+          <div className="md:col-span-5 bg-card border border-border rounded p-3 flex items-center justify-around divide-x divide-border">
             <div className="px-3 text-center">
               <div className="text-[10px] text-muted-foreground uppercase tracking-wider mb-1">Model Accuracy</div>
               <div className="text-sm font-bold text-success font-mono">95.9%</div>
@@ -455,7 +440,7 @@ const Index = () => {
         {/* Mode Indicator */}
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <div className={`w-3 h-3 rounded-full ${mode === 'LIVE' ? 'bg-success animate-pulse' :
+            <div className={`w-2.5 h-2.5 rounded-sm ${mode === 'LIVE' ? 'bg-success animate-pulse' :
               mode === 'MANUAL' ? 'bg-warning' : 'bg-primary'
               }`} />
             <span className="text-sm font-semibold">
@@ -470,7 +455,7 @@ const Index = () => {
         </div>
 
         {/* Control Panel Row */}
-        <div className="flex flex-col lg:flex-row items-stretch lg:items-center gap-3 bg-card/40 p-3 rounded-xl border border-border/50 mb-6 animate-entrance animate-entrance-2">
+        <div className="flex flex-col lg:flex-row items-stretch lg:items-center gap-3 bg-card p-3 rounded border border-border mb-6 animate-entrance animate-entrance-2">
           {/* 1. Mode Selector */}
           <div className="w-full lg:w-[320px] flex-shrink-0">
             <OperationalModes
@@ -528,23 +513,23 @@ const Index = () => {
               const balance = latestData.net_balance_mw;
               const isSurplus = balance >= 0;
               return (
-                <div className={`rounded-xl border p-6 animate-entrance animate-entrance-4 ${isSurplus ? 'bg-green-950/30 border-green-700/40' : 'bg-red-950/30 border-red-700/40'
+                <div className={`rounded border p-6 animate-entrance animate-entrance-4 ${isSurplus ? 'bg-success/5 border-success/30' : 'bg-destructive/5 border-destructive/30'
                   }`}>
                   {/* Balance */}
                   <div className="mb-4">
-                    <span className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">Net Grid Balance</span>
-                    <div className={`text-4xl font-bold font-mono mt-1 ${isSurplus ? 'text-green-400' : 'text-red-400'
+                    <span className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">Net Grid Balance</span>
+                    <div className={`text-4xl font-bold font-mono mt-1 ${isSurplus ? 'text-success' : 'text-destructive'
                       }`}>
-                      {isSurplus ? '⚡' : '⚠️'} {isSurplus ? '+' : ''}{balance.toFixed(1)} MW
-                      <span className={`ml-3 text-lg font-semibold ${isSurplus ? 'text-green-500' : 'text-red-500'
+                      {isSurplus ? '+' : ''}{balance.toFixed(1)} MW
+                      <span className={`ml-3 text-lg font-semibold ${isSurplus ? 'text-success' : 'text-destructive'
                         }`}>
                         ({isSurplus ? 'Surplus' : 'Deficit'})
                       </span>
                     </div>
                     <div className="text-xs text-muted-foreground mt-1.5">
-                      Generation: <span className="text-green-400 font-mono font-semibold">{latestData.simulated_supply_mw.toFixed(1)} MW</span>
+                      Generation: <span className="text-supply font-mono font-semibold">{latestData.simulated_supply_mw.toFixed(1)} MW</span>
                       &nbsp;—&nbsp;
-                      Demand: <span className="text-red-400 font-mono font-semibold">{latestData.simulated_demand_mw.toFixed(1)} MW</span>
+                      Demand: <span className="text-demand font-mono font-semibold">{latestData.simulated_demand_mw.toFixed(1)} MW</span>
                     </div>
                   </div>
 
@@ -553,7 +538,7 @@ const Index = () => {
 
                   {/* AI Recommendation */}
                   <div>
-                    <span className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">🤖 Recommended Action</span>
+                    <span className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">Recommended Action</span>
                     <div className="text-base font-semibold text-foreground mt-1.5 leading-relaxed">
                       {isSurplus
                         ? 'Export excess energy to the grid or store in battery for later use.'
@@ -602,7 +587,7 @@ const Index = () => {
                     alerts.slice(0, 5).map((alert, idx) => (
                       <div
                         key={idx}
-                        className={`p-2 rounded-lg text-xs border ${alert.level === 'critical'
+                        className={`p-2 rounded text-xs border ${alert.level === 'critical'
                           ? 'bg-destructive/5 border-destructive/20 text-destructive'
                           : alert.level === 'warning'
                             ? 'bg-warning/5 border-warning/20 text-warning'
@@ -627,7 +612,7 @@ const Index = () => {
                     <p className="text-[11px] text-muted-foreground text-center py-3">No scheduled maintenance</p>
                   ) : (
                     maintenanceWindows.map((window, idx) => (
-                      <div key={idx} className="p-2 rounded-lg bg-muted/30 border border-border/50">
+                      <div key={idx} className="p-2 rounded bg-muted/30 border border-border">
                         <div className="flex justify-between items-center mb-1">
                           <span className="text-[10px] font-bold text-primary">WINDOW #{idx + 1}</span>
                           <span className="text-[10px] font-mono bg-primary/10 text-primary px-1.5 py-0.5 rounded">
@@ -703,7 +688,7 @@ const Index = () => {
         ) : (
           <div className="space-y-4 animate-entrance animate-entrance-3">
             <div className="text-center py-6">
-              <div className="inline-block p-4 bg-muted/50 rounded-full mb-4 animate-pulse">
+              <div className="inline-block p-4 bg-muted/50 rounded mb-4 animate-pulse">
                 <span className="text-3xl">⚡</span>
               </div>
               <h3 className="text-lg font-semibold text-foreground mb-1">Initializing Simulation Engine...</h3>
@@ -711,11 +696,11 @@ const Index = () => {
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
               {[1,2,3,4].map(i => (
-                <div key={i} className="skeleton-pulse h-36 rounded-xl" />
+                <div key={i} className="skeleton-pulse h-36 rounded" />
               ))}
             </div>
-            <div className="skeleton-pulse h-32 rounded-xl" />
-            <div className="skeleton-pulse h-64 rounded-xl" />
+            <div className="skeleton-pulse h-32 rounded" />
+            <div className="skeleton-pulse h-64 rounded" />
           </div>
         )}
       </main>
@@ -744,7 +729,7 @@ const Index = () => {
             {/* Tech Stack */}
             <div className="flex flex-wrap items-center justify-center gap-2">
               {['Python', 'FastAPI', 'React', 'TypeScript', 'Scikit-Learn', 'Recharts'].map(tech => (
-                <span key={tech} className="text-[10px] font-medium text-muted-foreground/70 px-2 py-0.5 rounded-md bg-muted/50 border border-border/30">
+                <span key={tech} className="text-[10px] font-medium text-muted-foreground/70 px-2 py-0.5 rounded bg-muted/50 border border-border/30">
                   {tech}
                 </span>
               ))}

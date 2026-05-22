@@ -70,8 +70,9 @@ export default {
         },
       },
       fontFamily: {
-        mono: ['JetBrains Mono', 'Courier New', 'monospace'],
-        sans: ['Inter', 'system-ui', 'sans-serif'],
+        sans: ['DM Sans', 'system-ui', 'sans-serif'],
+        serif: ['DM Serif Display', 'Georgia', 'serif'],
+        mono: ['IBM Plex Mono', 'Courier New', 'monospace'],
       },
       borderRadius: {
         lg: "var(--radius)",

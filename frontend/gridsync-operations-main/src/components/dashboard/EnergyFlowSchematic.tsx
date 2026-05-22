@@ -21,17 +21,17 @@ const EnergyFlowSchematic = ({ data }: EnergyFlowSchematicProps) => {
     <div className="schematic-container">
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h3 className="text-lg font-semibold text-foreground">Energy Flow Schematic</h3>
+          <h3 className="text-lg font-serif text-foreground">Energy Flow Schematic</h3>
           <p className="text-xs text-muted-foreground mt-0.5">Real-time power distribution</p>
         </div>
         
         {/* Status Badge */}
-        <div className={`flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-semibold ${
+        <div className={`flex items-center gap-2 px-3 py-1.5 rounded text-xs font-semibold ${
           isSurplus 
             ? 'bg-success/10 text-success border border-success/20' 
             : 'bg-destructive/10 text-destructive border border-destructive/20'
         }`}>
-          <span className={`w-2 h-2 rounded-full ${isSurplus ? 'bg-success' : 'bg-destructive'} animate-pulse`} />
+          <span className={`w-2 h-2 rounded-sm ${isSurplus ? 'bg-success' : 'bg-destructive'}`} />
           {isSurplus ? 'SURPLUS' : 'DEFICIT'}: {Math.abs(data.net_balance_mw).toFixed(1)} MW
         </div>
       </div>
@@ -110,7 +110,7 @@ const EnergyFlowSchematic = ({ data }: EnergyFlowSchematicProps) => {
         {/* ====== WIND FARM ====== */}
         <g className="wind-farm">
           {/* Background panel */}
-          <rect x="30" y="40" width="140" height="130" rx="12" 
+          <rect x="30" y="40" width="140" height="130" rx="4" 
             fill="url(#windGradient)" stroke="hsl(var(--supply))" strokeWidth="2"/>
           
           {/* Wind Turbine - Professional 3D-like design */}
@@ -176,7 +176,7 @@ const EnergyFlowSchematic = ({ data }: EnergyFlowSchematicProps) => {
         {/* ====== BATTERY STORAGE ====== */}
         <g className="battery-storage">
           {/* Background panel */}
-          <rect x="250" y="40" width="140" height="130" rx="12" 
+          <rect x="250" y="40" width="140" height="130" rx="4" 
             fill="hsl(var(--card))" stroke="hsl(var(--battery))" strokeWidth="2"/>
           
           {/* Battery rack outline */}
@@ -248,7 +248,7 @@ const EnergyFlowSchematic = ({ data }: EnergyFlowSchematicProps) => {
         {/* ====== CITY LOAD ====== */}
         <g className="city-load">
           {/* Background panel */}
-          <rect x="470" y="40" width="140" height="130" rx="12" 
+          <rect x="470" y="40" width="140" height="130" rx="4" 
             fill="url(#cityGradient)" stroke="hsl(var(--demand))" strokeWidth="2"/>
           
           {/* City skyline */}
@@ -297,7 +297,7 @@ const EnergyFlowSchematic = ({ data }: EnergyFlowSchematicProps) => {
         {/* ====== GRID CONNECTION ====== */}
         <g className="grid-connection">
           {/* Background panel */}
-          <rect x="630" y="40" width="140" height="130" rx="12" 
+          <rect x="630" y="40" width="140" height="130" rx="4" 
             fill="url(#gridGradient)" stroke="hsl(var(--grid-export))" strokeWidth="2"/>
           
           {/* Power tower / Substation icon */}
@@ -354,7 +354,7 @@ const EnergyFlowSchematic = ({ data }: EnergyFlowSchematicProps) => {
 
       {/* System Imbalance Warning */}
       {hasImbalance && (
-        <div className="mt-4 p-3 bg-warning/10 border border-warning/30 rounded-lg flex items-start gap-3">
+        <div className="mt-4 p-3 bg-warning/10 border border-warning/30 rounded flex items-start gap-3">
           <AlertTriangle className="w-5 h-5 text-warning flex-shrink-0 mt-0.5" />
           <div>
             <div className="text-sm font-semibold text-warning">System Imbalance Detected</div>
@@ -368,19 +368,19 @@ const EnergyFlowSchematic = ({ data }: EnergyFlowSchematicProps) => {
       {/* Legend */}
       <div className="flex flex-wrap justify-center gap-6 mt-6 pt-4 border-t border-border text-xs text-muted-foreground">
         <span className="flex items-center gap-2">
-          <span className="w-3 h-3 rounded-full bg-supply" /> Wind Generation
+          <span className="w-3 h-3 rounded-sm bg-supply" /> Wind Generation
         </span>
         <span className="flex items-center gap-2">
-          <span className="w-3 h-3 rounded-full bg-battery" /> Battery Flow
+          <span className="w-3 h-3 rounded-sm bg-battery" /> Battery Flow
         </span>
         <span className="flex items-center gap-2">
-          <span className="w-3 h-3 rounded-full bg-demand" /> City Demand
+          <span className="w-3 h-3 rounded-sm bg-demand" /> City Demand
         </span>
         <span className="flex items-center gap-2">
-          <span className="w-3 h-3 rounded-full" style={{ background: 'hsl(var(--grid-export))' }} /> Grid Export
+          <span className="w-3 h-3 rounded-sm" style={{ background: 'hsl(var(--grid-export))' }} /> Grid Export
         </span>
         <span className="flex items-center gap-2">
-          <span className="w-3 h-3 rounded-full bg-destructive" /> Grid Import
+          <span className="w-3 h-3 rounded-sm bg-destructive" /> Grid Import
         </span>
       </div>
     </div>

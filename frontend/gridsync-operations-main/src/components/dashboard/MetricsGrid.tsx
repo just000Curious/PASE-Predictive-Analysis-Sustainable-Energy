@@ -61,10 +61,10 @@ const MetricsGrid = ({ data }: MetricsGridProps) => {
       {metrics.map((metric) => {
         const Icon = metric.icon;
         return (
-          <div key={metric.label} className="metric-panel group transition-all duration-200 hover:scale-[1.02]">
+          <div key={metric.label} className="metric-panel group">
             {/* Header */}
             <div className="flex items-center justify-between mb-3">
-              <div className={`p-2 rounded-lg bg-${metric.color}/10`}>
+              <div className={`p-2 rounded bg-${metric.color}/10`}>
                 <Icon className={`w-4 h-4 text-${metric.color}`} />
               </div>
               <div className={`flex items-center gap-1 text-xs font-medium ${metric.trendUp ? 'text-success' : 'text-destructive'}`}>
@@ -89,9 +89,9 @@ const MetricsGrid = ({ data }: MetricsGridProps) => {
             {/* Progress bar for battery */}
             {metric.label === 'BATTERY SOC' && (
               <div className="mb-3">
-                <div className="h-2 bg-muted rounded-full overflow-hidden">
+                <div className="h-2 bg-muted rounded-sm overflow-hidden">
                   <div 
-                    className={`h-full rounded-full transition-all duration-500 ${
+                    className={`h-full rounded-sm transition-all duration-500 ${
                       batteryStatus === 'high' ? 'bg-success' : 
                       batteryStatus === 'medium' ? 'bg-battery' : 'bg-warning'
                     }`}
