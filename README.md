@@ -70,7 +70,21 @@ MODEL_SUPPLY_PATH=models/power_supply_model.joblib
 MODEL_DEMAND_PATH=models/power_demand_model.joblib
 ```
 
-### Backend (FastAPI + ML Models)
+### 🐳 Running with Docker (Backend)
+
+The easiest way to run the backend is via Docker. Make sure Docker Desktop is running on your machine.
+
+```bash
+# Build the Docker image
+docker build -t pase-app .
+
+# Run the container on port 8001
+docker run -p 8001:8001 --name my-running-app pase-app
+```
+
+*The API documentation will instantly be available at [http://localhost:8001/docs](http://localhost:8001/docs)*
+
+### Backend (Manual Setup)
 
 ```bash
 # Navigate to the backend directory
