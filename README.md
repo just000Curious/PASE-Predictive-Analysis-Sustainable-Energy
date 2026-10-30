@@ -131,17 +131,56 @@ npm run dev
 
 Then open http://localhost:5173 in your browser and click **RUN SIMULATION**.
 
+## Datasets
+
+### T1.csv — Wind Turbine SCADA Data
+- **Source:** SCADA system of a single wind turbine
+- **Period:** 01 Jan 2018 – 31 Dec 2018 (10-minute intervals)
+- **Rows:** 50,530 raw → 32,476 after cleaning (removed shutdown/maintenance events where wind speed ≤ 3 m/s, active power ≤ 1 kW, or power exceeded the theoretical curve)
+- **Columns:**
+
+| Column | Description |
+|---|---|
+| `Date/Time` | Timestamp of the observation |
+| `LV ActivePower (kW)` | Actual power output of the turbine |
+| `Wind Speed (m/s)` | Wind speed at hub height |
+| `Theoretical_Power_Curve (KWh)` | Manufacturer's expected output for the given wind speed |
+| `Wind Direction (°)` | Wind direction in degrees |
+
+### AEP_hourly.csv — American Electric Power Hourly Demand
+- **Source:** PJM Interconnection (AEP zone)
+- **Period:** Oct 2004 – Aug 2018 (hourly intervals)
+- **Rows:** 121,273
+- **Columns:**
+
+| Column | Description |
+|---|---|
+| `Datetime` | Timestamp of the observation |
+| `AEP_MW` | Hourly energy consumption in megawatts |
+
+**Engineered features (demand model):** `hour_sin/cos`, `day_of_week_sin/cos`, `day_of_year_sin/cos`, `power_24h_ago` (lag-24), `power_168h_ago` (lag-168). After dropping NaN lag rows, 121,105 samples remain.
+
 ## Experiments and Results
 
 ### Wind-Power Generation
-- Split Type: random (80/20)
-- Random Forest: R² = 0.958760872707207
-- XGBRegressor: R² = 0.956708202358255
+- **Notebook:** `backend/Windmill_Power_Prediction.ipynb`
+- **Features:** Wind Speed (m/s), Wind Direction (°)
+- **Split:** random 80/20, `random_state=42`
+
+| Model | R² |
+|---|---|
+| Random Forest (n_estimators=250, max_depth=12, min_samples_leaf=10) | 0.958760872707207 |
+| XGBRegressor (n_estimators=300, max_depth=6, lr=0.05, subsample=0.8) | 0.956708202358255 |
 
 ### AEP Power Demand
-- Split Type: time-ordered (80/20)
-- Random Forest (lag-feature): R² = 0.8445984529319438, RMSE = 1011.5812613965211
-- XGBRegressor: R² = 0.8493072620575622, RMSE = 996.1374519963388
+- **Notebook:** `backend/Create_Model_2_(Consumption).ipynb`
+- **Features:** sin/cos time encodings + lag-24h + lag-168h
+- **Split:** time-ordered 80/20 (first 80% train, last 20% test)
+
+| Model | R² | RMSE (MW) |
+|---|---|---|
+| Random Forest (n_estimators=100, max_depth=15) | 0.8445984529319438 | 1011.5812613965211 |
+| XGBRegressor (n_estimators=300, max_depth=6, lr=0.05, subsample=0.8) | 0.8493072620575622 | 996.1374519963388 |
 
 ## Tech Stack
 
