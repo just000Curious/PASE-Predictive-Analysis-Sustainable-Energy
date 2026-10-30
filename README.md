@@ -131,6 +131,18 @@ npm run dev
 
 Then open http://localhost:5173 in your browser and click **RUN SIMULATION**.
 
+## Experiments and Results
+
+### Wind-Power Generation
+- Split Type: random (80/20)
+- Random Forest: R² = 0.958760872707207
+- XGBRegressor: R² = 0.956708202358255
+
+### AEP Power Demand
+- Split Type: time-ordered (80/20)
+- Random Forest (lag-feature): R² = 0.8445984529319438, RMSE = 1011.5812613965211
+- XGBRegressor: R² = 0.8493072620575622, RMSE = 996.1374519963388
+
 ## Tech Stack
 
 | Layer | Technology |
